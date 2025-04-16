@@ -4,6 +4,7 @@ const moviesRoutes = require('./routes/movies.routes');
 const reviewsRoutes = require('./routes/reviews.routes');
 const notFound = require('./middlewares/notFound');
 const errorHandler = require('./middlewares/errorHandler');
+const cors = require('cors');
 
 const app = express();
 const PORT = 3000;
@@ -13,10 +14,12 @@ app.use(express.json());
 app.use(logger('dev'));
 
 // Rutas principales
+app.use(express.static('public')); // sirve los archivos HTML/JS/CSS
+
+// Ruta principal
 app.get('/', (req, res) => {
-    console.log('¡Bienvenidos!');
-    res.send('¡Bienvenidos a la API de Películas!');
-  });
+  res.sendFile(__dirname + '/public/index.html'); // 💡 muestra index.html
+});
   
 
   

@@ -6,5 +6,13 @@
     "genre": "Ciencia Ficción",
     "description": "Una simulación que controla a la humanidad",
     "createdAt": "2025-04-16T20:32:21.383Z"
+  },
+  {
+    "id": "01b0fddc-4cf7-4e8d-be52-73d8794b915e",
+    "title": "OVERLOR",
+    "year": 2003,
+    "genre": "aventura",
+    "description": "serie de anime",
+    "createdAt": "2025-04-16T22:06:30.447Z"
   }
 ]

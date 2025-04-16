@@ -1,32 +1,27 @@
-<!-- frontend/index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>🎬 Películas y Reseñas</title>
+  <title>Películas</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="app.js" defer></script>
 </head>
 <body>
-  <h1>🎬 Películas y Reseñas</h1>
+  <h1>Películas</h1>
 
-  <section id="add-movie">
-    <h2>Agregar Película</h2>
-    <form id="movie-form">
-      <input type="text" id="title" placeholder="Título" required>
-      <input type="number" id="year" placeholder="Año" required>
-      <input type="text" id="genre" placeholder="Género" required>
-      <textarea id="description" placeholder="Descripción" required></textarea>
-      <button type="submit">Agregar</button>
-    </form>
-  </section>
+  <!-- Formulario para crear película -->
+  <form id="formAgregar">
+    <input type="text" id="title" placeholder="Título" required>
+    <input type="number" id="year" placeholder="Año" required>
+    <input type="text" id="genre" placeholder="Género" required>
+    <textarea id="description" placeholder="Descripción" required></textarea>
+    <button type="submit">Agregar Película</button>
+  </form>
 
-  <section id="movie-list">
-    <h2>Listado de Películas</h2>
-    <button onclick="getMovies()">Cargar Películas</button>
-    <div id="movies-container"></div>
-  </section>
+  <hr>
 
+  <!-- Contenedor de películas -->
+  <div id="peliculas"></div>
 
+  <script src="app.js"></script>
 </body>
 </html>

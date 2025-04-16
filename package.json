@@ -1,0 +1,25 @@
+{
+  "name": "peliculas_rese-as",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JHOER-S-F/peliculas_rese-as.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JHOER-S-F/peliculas_rese-as/issues"
+  },
+  "homepage": "https://github.com/JHOER-S-F/peliculas_rese-as#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "morgan": "^1.10.0"
+  }
+}

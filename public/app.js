@@ -15,8 +15,10 @@ async function cargarPeliculas() {
       <h3>${p.title} (${p.year})</h3>
       <p><strong>Género:</strong> ${p.genre}</p>
       <p>${p.description}</p>
-      <button onclick="eliminarPelicula('${p.id}')">Eliminar</button>
-      <button onclick="editarPelicula('${p.id}')">Editar</button>
+      <button onclick="eliminarPelicula('${p.id}')">🗑️ Eliminar</button>
+      <button onclick="editarPelicula('${p.id}')">✏️ Editar</button>
+      <button onclick="verReseñas('${p.id}')">👁 Ver Reseñas</button>
+      <button onclick="agregarReseña('${p.id}')">➕ Agregar Reseña</button>
     `;
     contenedor.appendChild(div);
   });
@@ -32,71 +34,77 @@ form.addEventListener('submit', async (e) => {
     description: document.getElementById('description').value
   };
 
-  try {
-    const res = await fetch(URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(nuevaPelicula)
-    });
+  await fetch(URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(nuevaPelicula)
+  });
 
-    if (!res.ok) throw new Error('Error al agregar la película.');
-
-    alert('✅ Película agregada correctamente.');
-    form.reset();
-    cargarPeliculas();
-  } catch (error) {
-    alert('❌ Hubo un error al agregar la película.');
-    console.error(error);
-  }
+  alert('✅ Película agregada');
+  form.reset();
+  cargarPeliculas();
 });
 
-// Eliminar película con confirmación
+// Eliminar película
 async function eliminarPelicula(id) {
-  const confirmacion = confirm('¿Estás seguro de que deseas eliminar esta película?');
-  if (!confirmacion) return;
-
-  try {
-    const res = await fetch(`${URL}/${id}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Error al eliminar');
-
-    alert('✅ Película eliminada correctamente.');
+  if (confirm('¿Estás seguro de eliminar esta película?')) {
+    await fetch(`${URL}/${id}`, { method: 'DELETE' });
+    alert('🗑️ Película eliminada');
     cargarPeliculas();
-  } catch (error) {
-    alert('❌ No se pudo eliminar la película.');
-    console.error(error);
   }
 }
 
-// Editar película (solo año, título, descripción)
+// Editar película (solo título, año, descripción)
 async function editarPelicula(id) {
   const nuevoTitulo = prompt('Nuevo título:');
   const nuevoAño = prompt('Nuevo año:');
   const nuevaDescripcion = prompt('Nueva descripción:');
 
-  if (!nuevoTitulo || !nuevoAño || !nuevaDescripcion) {
-    alert('❌ Todos los campos son obligatorios para editar.');
-    return;
-  }
+  await fetch(`${URL}/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: nuevoTitulo,
+      year: nuevoAño,
+      description: nuevaDescripcion
+    })
+  });
 
-  try {
-    const res = await fetch(`${URL}/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        title: nuevoTitulo,
-        year: nuevoAño,
-        description: nuevaDescripcion
-      })
-    });
+  alert('✏️ Película editada');
+  cargarPeliculas();
+}
 
-    if (!res.ok) throw new Error('Error al editar');
+// Ver reseñas de una película
+async function verReseñas(id) {
+  const res = await fetch(`${URL}/${id}/reviews`);
+  const reseñas = await res.json();
 
-    alert('✅ Película actualizada correctamente.');
-    cargarPeliculas();
-  } catch (error) {
-    alert('❌ No se pudo editar la película.');
-    console.error(error);
-  }
+  if (reseñas.length === 0) return alert('❌ No hay reseñas aún.');
+
+  let texto = '📋 Reseñas:\n\n';
+  reseñas.forEach(r => {
+    texto += `🧑 ${r.reviewer}: ⭐ ${r.rating}/5\n🗨️ ${r.comment}\n\n`;
+  });
+
+  alert(texto);
+}
+
+// Agregar reseña
+async function agregarReseña(id) {
+  const reviewer = prompt('¿Tu nombre?');
+  const comment = prompt('¿Tu comentario?');
+  const rating = prompt('¿Tu calificación del 1 al 5?');
+
+  if (!reviewer || !comment || !rating) return alert('❌ Faltan datos');
+
+  await fetch(`${URL}/${id}/reviews`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ reviewer, comment, rating: parseInt(rating) })
+  });
+
+  alert('✅ Reseña agregada');
 }
 
 cargarPeliculas();
+
